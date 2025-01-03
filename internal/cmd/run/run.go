@@ -530,9 +530,9 @@ func openPprof(host, port string) {
 
 func initLogger(log **logger.Logger, name, path, level string) error {
 	logOpt := logger.Option{
-		//Path:  path,
+		Path:  path,
 		Level: level,
-		Flags: logger.OPT_DEFAULT | logger.OPT_STDOUT,
+		Flags: logger.OPT_DEFAULT,
 	}
 
 	if err := logger.InitRoot(&logOpt); err != nil {
