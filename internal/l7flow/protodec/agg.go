@@ -93,6 +93,16 @@ func (agg *HTTPAggP) Obs(conn *comm.ConnectionInfo, data *ProtoData) {
 	// direction
 	key.direction = data.Direction.String()
 
+	// traceID
+	if !data.Meta.TraceID.Zero() {
+		key.TraceID = data.Meta.TraceID.StringHex()
+	}
+
+	// SpanID
+	if !data.Meta.ParentSpanID.Zero() {
+		key.SpanID = data.Meta.ParentSpanID.StringHex()
+	}
+
 	// family
 	isV6 := !netflow.ConnAddrIsIPv4(conn.Meta)
 	if conn.Saddr[0] == 0 && conn.Saddr[1] == 0 &&
@@ -220,6 +230,14 @@ func kv2point(key *aggKey, value *aggValue, pTime time.Time,
 		"dst_ip_type": key.dType,
 
 		"netns": key.NetNS,
+	}
+
+	if key.TraceID != "" {
+		tags["trace_id"] = key.TraceID
+	}
+
+	if key.SpanID != "" {
+		tags["span_id"] = key.SpanID
 	}
 
 	if key.DNATAddr != "" && key.DNATPort != 0 {

@@ -25,6 +25,9 @@ type BaseKey struct {
 	DNATPort uint32
 
 	NetNS string
+
+	TraceID string
+	SpanID  string
 }
 
 type aggKey struct {
